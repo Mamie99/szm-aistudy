@@ -1,0 +1,114 @@
+# ===================== Python 原生缓存文件 =====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+*.pyd
+*.pyx
+
+# ===================== 虚拟环境 venv/conda =====================
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+conda_env/
+*.env
+.env.local
+
+# ===================== 日志、运行缓存 =====================
+*.log
+logs/
+log/
+*.out
+*.err
+tmp/
+temp/
+.cache/
+
+# ===================== 本地数据库 & 向量库文件（重点！你的RAG项目） =====================
+# Chroma 向量库
+chroma/
+chromadb/
+*.sqlite
+*.sqlite3
+# FAISS 离线索引
+*.faiss
+*.index
+# LanceDB
+*.lance
+# Milvus/Qdrant 本地持久化
+qdrant_storage/
+milvus_data/
+
+# ===================== 模型权重、大模型本地文件 =====================
+*.bin
+*.pth
+*.ckpt
+*.safetensors
+model/
+models/
+weights/
+checkpoints/
+*.gguf
+*.ggml
+
+# ===================== API密钥、配置隐私文件 =====================
+.env
+.env.*
+config_secret.yaml
+secret.json
+api_key.txt
+
+# ===================== Jupyter Notebook 缓存 =====================
+.ipynb_checkpoints/
+*.ipynb
+# 如需提交笔记，注释上面一行，保留下面
+# !*.ipynb
+
+# ===================== IDE 编辑器缓存 =====================
+# VSCode
+.vscode/
+*.swp
+*.swo
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+# vim
+*~
+# Mac系统文件
+.DS_Store
+.AppleDouble
+# Windows
+Thumbs.db
+
+# ===================== Docker 临时文件 =====================
+.dockerignore
+docker-volume/
+
+# ===================== 测试覆盖率、打包缓存 =====================
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+nox/
+.venv/
