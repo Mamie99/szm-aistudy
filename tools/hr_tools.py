@@ -87,7 +87,7 @@ def generate_employment_certificate(uid:str, cer_type:str):
         # file_path.write_text(content, encoding='utf-8')
 
         return(
-            f'[系统提示] 已为您自动生成收入证明：------------\n'
+            f'[系统成功] 已为您自动生成收入证明：------------\n'
             f'{content}'
             f'\n------------'
         )
@@ -97,7 +97,7 @@ def generate_employment_certificate(uid:str, cer_type:str):
             f'\n （公章）'
         )
         return (
-            f'[系统提示] 已为您自动生成在职证明：------------\n'
+            f'[系统成功] 已为您自动生成在职证明：------------\n'
             f'{content}'
             f'\n------------'
         )
