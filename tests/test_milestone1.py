@@ -21,7 +21,7 @@ def test_get_leave_balance():
     """ 测试2:查看李四的剩余假期 """
     result = get_leave_balance.invoke({'uid':'1002'})
     assert '李四' in result
-    assert '7' in result
+    assert '7' in result    # 7天假期
 
 def test_get_employee_certificate_p5():
     """ 测试3:查看张三(P5)的收入证明(预期成功) """
