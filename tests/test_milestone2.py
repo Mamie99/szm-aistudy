@@ -5,7 +5,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
-from agent.rag_pipeline import search_hr_policy
+# from agent.rag_pipeline import search_hr_policy
+from agent.rag_pipelline2 import search_hr_policy
 
 QUESTION = [
     'P5 员工去成都出差，一天住宿报销多少钱？',
