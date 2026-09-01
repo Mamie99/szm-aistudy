@@ -1,3 +1,4 @@
+from http.client import responses
 from typing import Annotated, TypedDict, List
 from pydantic import BaseModel, Field
 import os
@@ -10,6 +11,7 @@ from langgraph.prebuilt import ToolNode
 from langchain.chat_models import init_chat_model
 from langchain_core.output_parsers import JsonOutputParser
 from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import InMemorySaver
 
 from tools.hr_tools import get_employee_profile, get_leave_balance, generate_employment_certificate
 from agent.rag_pipelline2 import search_hr_policy
@@ -37,6 +39,27 @@ tools_node = ToolNode(tools)
 def chatbot_node(state: AgentState):
     """「执行者节点」意图理解、工具调用与内容生成 """
     messages = state.get('messages', [])
+
+    # 新增逻辑：拦截应用层发来的 超时总结 隐藏指令
+    last_message = messages[-1]
+    if isinstance(last_message, HumanMessage) and last_message.content == '__SYS_IDLE_TIMEOUT__':
+        print(f'\n「触发超时」正在压缩会话历史，生成自动总结...')
+        summary_llm = llm.model_copy(update={'temperature': 0.3,})
+        summary_prompt = (
+            """
+            # 角色
+            - 你是一名HR助理。请用简短的语言，按照输出格式要求，总结上面对话中员工咨询的核心问题以及你给出的最终结论，直接按输出格式要求。
+            
+            # 输出格式要求
+            - 以【会话闲置总结】开头直接输出
+            - 输出用户的基本信息（姓名、工号）
+            - 用户咨询的主要问题
+            - 以提供的信息和答复
+            - 未完成的事项（如果有）
+            """
+        )
+        response = summary_llm.invoke(messages[:-1] + [SystemMessage(content=summary_prompt)])
+        return {'messages': [response]}
 
     # 首轮对话注入System Prompt
     if len(messages) == 1:
@@ -140,6 +163,7 @@ def router_after_fact_checker(state: AgentState):
     else:
         return 'end'
 
+memory = InMemorySaver()
 # 5.构建状态图
 hr_agent_app = (
     StateGraph(AgentState)
@@ -155,7 +179,7 @@ hr_agent_app = (
     .add_conditional_edges('fact_checker', router_after_fact_checker,
         {'chatbot': 'chatbot','end': END,}
     )
-    .compile()
+    .compile(checkpointer=memory)
 )
 
 

@@ -101,6 +101,7 @@ def build_ensemble_retriever():
     vector_retriever = vector_store.as_retriever(search_kwargs={'k': 5})
 
     # 混合：使用 EnsembleRetriever (底层采用 RRF 倒数秩融合算法)
+    # EnsembleRetriever 库已经去重了
     ensemble_retriever = EnsembleRetriever(
         retrievers=[bm25_retriever, vector_retriever],
         weights=[0.4, 0.6],     # 权重可调：偏向关键字还是偏向语义，40%依赖关键字，60%依赖语义泛化
